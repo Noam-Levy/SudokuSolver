@@ -23,7 +23,7 @@ public class SudokuSolver {
 	}
 
 	public static SudokuSolver getInstance(int boardSize) {
-		if (_instance.BOARD_SIZE != boardSize)
+		if (_instance == null || _instance.BOARD_SIZE != boardSize)
 			_instance = new SudokuSolver(boardSize);
 		return _instance;
 	}

@@ -9,6 +9,8 @@ public class GameManager implements Serializable {
 	private static final long serialVersionUID = 466609140751114435L;
 	
 	private int[][] gameBoard, solvedBoard; // solved board is used for real-time hints.
+	@SuppressWarnings("unused") 
+	private int current_difficulty; // for reference when saving
 	private ArrayList<ModelEventListeners> listeners;
 	private SudokuSolver solver;
 	private BoardGenerator gameGenerator;
@@ -16,42 +18,41 @@ public class GameManager implements Serializable {
 	public GameManager() {
 		this.listeners = new ArrayList<>();
 		this.gameGenerator = new BoardGenerator();
-		initSolver();
-	}
-	
-	private void initSolver() {
-		/*
-		 * helper function for constructor
-		 */
 		this.solver = SudokuSolver.getInstance(gameGenerator.getBoardSize());
 	}
-
+	
 	public void startGame(int difficulty) {
 		/*
-		 * Generates new game board based on passed difficulty setting and getting the solved board in the background.
+		 * Generates new game board based on passed difficulty setting and preparing the solved board in the background.
 		 */
-		gameBoard = gameGenerator.getBoard(difficulty);
+		this.gameBoard = gameGenerator.getBoard(difficulty);
+		this.current_difficulty = difficulty;
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				solvedBoard = solver.getSolvedBoard(gameBoard);
+				solveBoard();
 			}
 		}).start();
-		// pass game board to view to be displayed
 	}
 	
 	public boolean isCorrectPlacement(int row, int col, int value) {
-		/*
-		 * checks if placed value matches solution 
-		 * (real-time hinting)
-		 */
+		// checks if placed value matches solution (real-time hinting)
 		return solvedBoard[row][col] == value;
 	}
 	
 	
     public int[][] getBoard() {
-		return gameBoard;	
+    	return gameBoard;	
 	}
+    
+    public void solveBoard() {
+    	int[][] copiedBoard = this.gameGenerator.copyBoard(gameBoard);
+    	this.solvedBoard = this.solver.getSolvedBoard(copiedBoard);	
+	}
+    
+    public int getBoardSize() {
+    	return gameGenerator.getBoardSize();
+    }
 
 	public boolean registerListener(ModelEventListeners newListener) {
     	return this.listeners.add(newListener);

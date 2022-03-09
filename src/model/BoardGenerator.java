@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class BoardGenerator {
 	
-	private final int BOARD_SIZE = 9, BLOCK_SIZE = 3;
+	private final int BOARD_SIZE = 9, BOX_SIZE = (int)(Math.sqrt(BOARD_SIZE));
 	private int[][] board;
 	private Random random;
 
@@ -30,7 +30,7 @@ public class BoardGenerator {
 	public void printBoard(int[][] board) {
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			if(i > 0 && i % 3 == 0) {
-				for (int j = 0; j < BLOCK_SIZE; j++)
+				for (int j = 0; j < BOX_SIZE; j++)
 					System.out.print("-\t-\t-\t\t");
 				System.out.println();
 			}
@@ -47,8 +47,8 @@ public class BoardGenerator {
 		shuffleNumbers();
 		shuffleRows();
 		shuffleCols();
-		shuffle3X3Rows();
-		shuffle3X3Cols();
+		shuffleBoxRows();
+		shuffleBoxCols();
 	}
 	
 	public int[][] getBoard(int difficulty) {
@@ -81,7 +81,7 @@ public class BoardGenerator {
 		return puzzleBoard;
 	}
 
-	private int[][] copyBoard(int[][] original) {
+	public int[][] copyBoard(int[][] original) {
 		int[][] copy = new int[BOARD_SIZE][BOARD_SIZE];
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {
@@ -114,9 +114,9 @@ public class BoardGenerator {
 		int blockNumber;
 
 		for (int i = 0; i < BOARD_SIZE; i++) {
-			int ranNum = random.nextInt(BLOCK_SIZE);
-			blockNumber = i / BLOCK_SIZE;
-			swapRows(i, blockNumber * BLOCK_SIZE + ranNum);
+			int ranNum = random.nextInt(BOX_SIZE);
+			blockNumber = i / BOX_SIZE;
+			swapRows(i, blockNumber * BOX_SIZE + ranNum);
 		}
 	}
 
@@ -130,9 +130,9 @@ public class BoardGenerator {
 		int blockNumber;
 
 		for (int i = 0; i < BOARD_SIZE; i++) {
-			int ranNum = random.nextInt(BLOCK_SIZE);
-			blockNumber = i / BLOCK_SIZE;
-			swapCols(i, blockNumber * BLOCK_SIZE + ranNum);
+			int ranNum = random.nextInt(BOX_SIZE);
+			blockNumber = i / BOX_SIZE;
+			swapCols(i, blockNumber * BOX_SIZE + ranNum);
 		}
 	}
 	
@@ -145,31 +145,30 @@ public class BoardGenerator {
 		}
 	}
 
-	private void shuffle3X3Rows() {
+	private void shuffleBoxRows() {
 
-		for (int i = 0; i < BLOCK_SIZE; i++) {
-			int ranNum = random.nextInt(BLOCK_SIZE);
-			swap3X3Rows(i, ranNum);
+		for (int i = 0; i < BOX_SIZE; i++) {
+			int ranNum = random.nextInt(BOX_SIZE);
+			swapBoxRows(i, ranNum);
 		}
 	}
 
-	private void swap3X3Rows(int r1, int r2) {
-		for (int i = 0; i < BLOCK_SIZE; i++) {
-			swapRows(r1 * BLOCK_SIZE + i, r2 * BLOCK_SIZE + i);
+	private void swapBoxRows(int r1, int r2) {
+		for (int i = 0; i < BOX_SIZE; i++) {
+			swapRows(r1 * BOX_SIZE + i, r2 * BOX_SIZE + i);
 		}
 	}
 
-	private void shuffle3X3Cols() {
-
-		for (int i = 0; i < BLOCK_SIZE; i++) {
-			int ranNum = random.nextInt(BLOCK_SIZE);
-			swap3X3Cols(i, ranNum);
+	private void shuffleBoxCols() {
+		for (int i = 0; i < BOX_SIZE; i++) {
+			int ranNum = random.nextInt(BOX_SIZE);
+			swapBoxCols(i, ranNum);
 		}
 	}
 	
-	private void swap3X3Cols(int c1, int c2) {
-		for (int i = 0; i < BLOCK_SIZE; i++) {
-			swapCols(c1 * BLOCK_SIZE + i, c2 * BLOCK_SIZE + i);
+	private void swapBoxCols(int c1, int c2) {
+		for (int i = 0; i < BOX_SIZE; i++) {
+			swapCols(c1 * BOX_SIZE + i, c2 * BOX_SIZE + i);
 		}
 	}
 }
