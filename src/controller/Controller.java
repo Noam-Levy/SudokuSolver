@@ -51,9 +51,32 @@ public class Controller implements UIEventListeners, ModelEventListeners {
 		gameManager.startGame(level);
 		return requestGameBoard();
 	}
+	
 
+	@Override
+	public void endGame() {
+		gameManager.endGame();
+	}
+	
 	@Override
 	public boolean checkValidPosition(int row, int col, int value) {
 		return gameManager.isCorrectPlacement(row, col, value);
 	}
+
+	@Override
+	public void updateTimer(int minutes, int seconds) {
+		view.updateTimer(minutes, seconds);
+		
+	}
+
+	@Override
+	public void solveInteractively() {
+		gameManager.solveInteractively();
+	}
+
+	@Override
+	public void setCellValue(int row, int col, int i) {
+		view.setCellValue(row, col, Integer.toString(i));
+	}
+
 }

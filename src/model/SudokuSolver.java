@@ -53,7 +53,7 @@ public class SudokuSolver {
 		return null;
 	}
 
-	private boolean isValidPlacement(int[][] board, int row, int col) {
+	public boolean isValidPlacement(int[][] board, int row, int col) {
 		return isValidRow(board, row) && isValidColumn(board, col) && isValidBox(board, row, col);
 	}
 

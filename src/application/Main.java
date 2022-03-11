@@ -1,17 +1,14 @@
 package application;
 
-import java.io.IOException;
-
-import controller.Controller;
-
 /**
  * 
  * @author Noam Levy
  *
  **/
 
+import java.io.IOException;
+import controller.Controller;
 import model.GameManager;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 
